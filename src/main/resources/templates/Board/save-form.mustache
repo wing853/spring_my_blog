@@ -1,0 +1,150 @@
+{{> layout/header}}
+
+<style>
+    /* 기본 배경 및 폰트 */
+    body {
+        background-color: #f8fafc;
+        font-family: 'Pretendard', -apple-system, sans-serif;
+    }
+
+    /* 글쓰기 카드 컨테이너 */
+    .write-wrapper {
+        max-width: 800px;
+        margin: 50px auto;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+    }
+
+    /* 카드 헤더 */
+    .write-header {
+        padding: 30px 40px;
+        background-color: #ffffff;
+        border-bottom: 2px solid #cbd5e1;
+        text-align: center;
+    }
+
+    .write-header h2 {
+        font-weight: 800;
+        font-size: 1.8rem;
+        color: #1e293b;
+        letter-spacing: -1px;
+        margin: 0;
+    }
+
+    /* 폼 영역 */
+    .write-body {
+        padding: 40px;
+    }
+
+    /* 입력창 스타일 커스텀 */
+    .custom-input {
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        background-color: #fcfdfe;
+        color: #334155;
+    }
+
+    .custom-input:focus {
+        background-color: #ffffff;
+        border-color: #1e293b;
+        box-shadow: 0 0 0 4px rgba(30, 41, 59, 0.05);
+        outline: none;
+    }
+
+    /* 읽기 전용(readonly) 입력창 스타일 */
+    .custom-input:read-only {
+        background-color: #f1f5f9; /* 연한 회색 배경 */
+        color: #64748b;            /* 흐린 글자색 */
+        cursor: not-allowed;       /* 금지 커서 표시 */
+        border-color: #e2e8f0;
+    }
+
+    .input-label {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #475569;
+        margin-bottom: 8px;
+        display: block;
+        margin-left: 5px;
+    }
+
+    /* 글쓰기 완료 버튼 */
+    .btn-write-submit {
+        background-color: #1e293b;
+        color: #ffffff;
+        border: none;
+        border-radius: 12px;
+        padding: 15px;
+        width: 100%;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+    .btn-write-submit:hover {
+        background-color: #0f172a;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    textarea.custom-input {
+        resize: none;
+        line-height: 1.6;
+    }
+</style>
+
+<div class="container flex-grow-1">
+    <div class="write-wrapper">
+        <div class="write-header">
+            <h2><i class="fa-solid fa-pen-nib me-2"></i>새 포스트 작성</h2>
+        </div>
+
+        <div class="write-body">
+            <form action="/board/save" method="post">
+
+                <!-- 작성자: 로그인한 사용자의 이름을 세션에서 가져와 고정 -->
+                <div class="mb-4">
+                    <label class="input-label">작성자</label>
+                    <input type="text"
+                           class="form-control custom-input"
+                           value="{{sessionUser.username}}"
+                           readonly>
+                    <!-- 💡 주의: readonly 필드는 서버로 전송되지 않을 수 있으므로,
+                         실제 DB 저장 시에는 Controller에서 세션 유저를 꺼내서 사용하는 것이 정석입니다. -->
+                </div>
+
+                <div class="mb-4">
+                    <label class="input-label">제목</label>
+                    <input type="text"
+                           name="title"
+                           class="form-control custom-input"
+                           placeholder="멋진 제목을 지어보세요"
+                           required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="input-label">내용</label>
+                    <textarea name="content"
+                              rows="8"
+                              class="form-control custom-input"
+                              placeholder="당신의 이야기를 들려주세요..."
+                              required></textarea>
+                </div>
+
+                <button type="submit" class="btn-write-submit">
+                    글쓰기 완료
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{> layout/footer}}

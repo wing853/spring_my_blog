@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: myblog
+
+  profiles:
+    active:
+      - dev

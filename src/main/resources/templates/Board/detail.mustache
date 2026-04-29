@@ -1,0 +1,225 @@
+{{> layout/header}}
+
+<style>
+    /* 기본 배경 및 폰트 */
+    body {
+        background-color: #f8fafc;
+        font-family: 'Pretendard', -apple-system, sans-serif;
+    }
+
+    /* 메인 상세 카드 컨테이너 */
+    .detail-wrapper {
+        max-width: 850px;
+        margin: 50px auto;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+    }
+
+    /* [수정/삭제] 버튼 섹션 */
+    .action-bar {
+        padding: 25px 40px 10px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .btn-premium {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.6rem 1.3rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        color: #475569 !important;
+    }
+
+    .btn-premium-edit:hover {
+        border-color: #6366f1;
+        color: #6366f1 !important;
+        background-color: #fcfdff;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.1);
+    }
+
+    .btn-premium-delete:hover {
+        border-color: #f87171;
+        color: #f87171 !important;
+        background-color: #fffafb;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(248, 113, 113, 0.1);
+    }
+
+    .btn-premium i {
+        margin-right: 6px;
+        font-size: 0.9rem;
+        opacity: 0.7;
+    }
+
+    /* [변경 포인트] 배경은 흰색으로 복구, Border만 더 진하게 강조 */
+    .article-header {
+        padding: 40px 40px 50px;
+        background-color: #ffffff; /* 원래대로 화이트 복구 */
+        border-bottom: 2px solid #cbd5e1; /* 선 색상을 더 진하게 변경 */
+        text-align: center;
+    }
+
+    .article-title {
+        font-weight: 800;
+        font-size: 2.2rem;
+        color: #1e293b;
+        letter-spacing: -1px;
+        line-height: 1.4;
+        margin-bottom: 20px;
+    }
+
+    .author-tag {
+        display: inline-flex;
+        align-items: center;
+        background: #1e293b;
+        color: #fff;
+        padding: 5px 15px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    /* 본문 영역 */
+    .article-body {
+        padding: 50px 50px 60px;
+        font-size: 1.15rem;
+        line-height: 1.9;
+        color: #334155;
+        min-height: 300px;
+        background-color: #ffffff;
+    }
+
+    /* 댓글 섹션 */
+    .reply-container {
+        background-color: #fcfdfe;
+        padding: 40px 50px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .reply-count {
+        font-weight: 700;
+        font-size: 1rem;
+        color: #1e293b;
+        margin-bottom: 20px;
+    }
+
+    .reply-form {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 15px;
+        transition: all 0.3s;
+    }
+
+    .reply-form:focus-within {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.05);
+    }
+
+    .btn-reply {
+        background: #1e293b;
+        color: white;
+        border: none;
+        padding: 6px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: opacity 0.2s;
+    }
+
+    .reply-item {
+        padding: 20px 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .reply-user {
+        font-weight: 700;
+        color: #1e293b;
+        font-size: 0.9rem;
+        margin-right: 10px;
+    }
+
+    .reply-content {
+        color: #64748b;
+        font-size: 0.95rem;
+        margin-top: 5px;
+    }
+
+    .btn-delete-icon {
+        color: #cbd5e1;
+        transition: color 0.2s;
+        border: none;
+        background: none;
+    }
+
+    .btn-delete-icon:hover {
+        color: #f87171;
+    }
+</style>
+
+<div class="container flex-grow-1">
+    <div class="detail-wrapper">
+
+        <div class="action-bar">
+            <a href="/board/{{board.id}}/update-form" class="btn-premium btn-premium-edit">
+                <i class="fa-regular fa-pen-to-square"></i>수정
+            </a>
+            <form action="/board/{{board.id}}/delete" method="post" class="m-0">
+                <button type="submit" class="btn-premium btn-premium-delete">
+                    <i class="fa-regular fa-trash-can"></i>삭제
+                </button>
+            </form>
+        </div>
+
+        <div class="article-header text-center text-md-start">
+            <h1 class="article-title">{{board.title}}</h1>
+            <div class="author-tag">
+                <i class="fa-solid fa-user-pen me-2"></i> {{board.user.username}}
+            </div>
+        </div>
+
+        <div class="article-body">
+            {{board.content}}
+        </div>
+
+        <div class="reply-container">
+            <div class="reply-count">
+                <i class="fa-regular fa-comments me-2"></i> 댓글 리스트
+            </div>
+
+            <div class="reply-form mb-4">
+                <form action="/reply/save" method="post">
+                    <textarea class="form-control border-0 shadow-none p-0" rows="2" name="comment" placeholder="댓글을 입력해 주세요..."></textarea>
+                    <div class="d-flex justify-content-end mt-2">
+                        <button type="submit" class="btn-reply">등록</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="reply-list">
+                <div class="reply-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <span class="reply-user">cos</span>
+                        <div class="reply-content">배경색 없이도 선 하나로 구분이 명확해졌네요!</div>
+                    </div>
+                    <form action="/reply/1/delete" method="post" class="m-0">
+                        <button class="btn-delete-icon"><i class="fa-solid fa-xmark"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> layout/footer}}

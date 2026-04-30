@@ -18,6 +18,17 @@ public class BoardRequest {
                     .user(sessionUser)
                     .build();
         }
+
+        // 게시글 작성시 유효성 검사 편의 메서드
+        public void validate() {
+            if(title.trim().isEmpty() || title == null){
+                throw new IllegalArgumentException("제목은 필수 입니다.");
+            }
+
+            if(content.length() < 3 || content == null){
+                throw new IllegalArgumentException("내용은 3글자 이상 작성해야 합니다.");
+            }
+        }
     }
 
     @Data

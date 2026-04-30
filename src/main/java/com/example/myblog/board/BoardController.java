@@ -40,6 +40,8 @@ public class BoardController {
             return "redirect:user/login-form";
         }
 
+        saveDTO.validate();
+
         boardPersistRepository.save(saveDTO.toEntity(sessionUser));
         return "redirect:/";
     }

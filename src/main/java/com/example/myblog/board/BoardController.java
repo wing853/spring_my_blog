@@ -1,5 +1,6 @@
 package com.example.myblog.board;
 
+import com.example.myblog._core.errors.Exception500;
 import com.example.myblog.user.User;
 import com.example.myblog.util.PageDTO;
 import jakarta.servlet.http.HttpSession;
@@ -52,7 +53,7 @@ public class BoardController {
      */
     @GetMapping({"/", "index"})
     public String list(Model model) {
-        List<Board> boardList = boardService.findAll();
+        List<BoardResponse.ListDTO> boardList = boardService.findAll();
         model.addAttribute("boardList", boardList);
         return "board/list";
     }
@@ -61,7 +62,7 @@ public class BoardController {
     // http://localhost:8080/board/1
     @GetMapping("/board/{id}")
     public String detailPage(@PathVariable(name = "id") Integer id, Model model) {
-        Board board = boardService.findById(id);
+        BoardResponse.DetailDTO board = boardService.findById(id);
         model.addAttribute("board", board);
         return "board/detail";
     }
@@ -81,7 +82,7 @@ public class BoardController {
     @GetMapping("/board/{id}/update-form")
     public String updateFormPage(@PathVariable(name = "id") Integer id, Model model, HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Board boardEntity = boardService.findByIdAndCheckOwner(id, sessionUser);
+        BoardResponse.DetailDTO boardEntity = boardService.findByIdAndCheckOwner(id, sessionUser);
         model.addAttribute("board", boardEntity);
         return "board/update-form";
     }

@@ -17,7 +17,7 @@
     }
 
     .board-card:hover {
-        border-color: #6366f1; /* 포인트 컬러 */
+        border-color: #6366f1;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
         transform: translateY(-3px);
     }
@@ -52,7 +52,7 @@
         color: #64748b;
         display: flex;
         align-items: center;
-        gap: 15px; /* 아이템 간 간격 */
+        gap: 15px;
     }
 
     .info-item {
@@ -61,7 +61,7 @@
     }
 
     .info-item i {
-        color: #6366f1; /* 아이콘 색상 통일 */
+        color: #6366f1;
         font-size: 1rem;
     }
 
@@ -89,30 +89,6 @@
         color: white;
         box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
     }
-
-    /* 페이지네이션 커스텀 */
-    .pagination .page-link {
-        background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        color: #475569;
-        margin: 0 3px;
-        border-radius: 8px !important;
-        padding: 0.6rem 1.1rem;
-        transition: all 0.2s;
-        font-weight: 500;
-    }
-
-    .pagination .page-item.active .page-link {
-        background-color: #1e293b;
-        border-color: #1e293b;
-        color: white;
-    }
-
-    .pagination .page-item.disabled .page-link {
-        background-color: #f8fafc;
-        color: #cbd5e1;
-        pointer-events: none;
-    }
 </style>
 
 <div class="container py-5 flex-grow-1">
@@ -132,54 +108,33 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h4 class="card-title">{{title}}</h4>
+
                                 <div class="board-info">
-                                    <!-- 작성자 아이콘 + 이름 -->
+
+                                    <!-- 작성자 -->
                                     <div class="info-item">
                                         <i class="fa-solid fa-circle-user"></i>
-                                        <span class="author-name">{{user.username}}</span>
+                                        <span class="author-name">{{username}}</span>
                                     </div>
-                                    <!-- 날짜 아이콘 + 시간 -->
+
+                                    <!-- 작성 시간 -->
                                     <div class="info-item">
                                         <i class="fa-regular fa-calendar-check me-1"></i>
-                                        <span>{{time}}</span>
+                                        <span>{{createdAt}}</span>
                                     </div>
+
                                 </div>
                             </div>
+
                             <div>
-                                <a href="/board/{{id}}" class="btn btn-detail">읽어보기</a>
+                                <a href="/board/{{id}}" class="btn btn-detail">
+                                    읽어보기
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             {{/boardList}}
-
-            <!-- 동적 페이지네이션 -->
-            <nav class="mt-5">
-                <ul class="pagination d-flex justify-content-center">
-
-                    <!-- 이전 페이지 -->
-                    <li class="page-item {{#first}}disabled{{/first}}">
-                        <a class="page-link" href="?page={{prevPage}}">
-                        <i class="fa-solid fa-angle-left"></i>
-                        </a>
-                    </li>
-
-                    <!-- 페이지 번호 리스트 -->
-                    {{#pageNumbers}}
-                        <li class="page-item {{#active}}active{{/active}}">
-                            <a class="page-link" href="?page={{data}}">{{display}}</a>
-                        </li>
-                    {{/pageNumbers}}
-
-                    <!-- 다음 페이지 -->
-                    <li class="page-item {{#last}}disabled{{/last}}">
-                        <a class="page-link" href="?page={{nextPage}}">
-                        <i class="fa-solid fa-angle-right"></i>
-                        </a>
-                    </li>
-
-                </ul>
-            </nav>
 
         </div>
     </div>

@@ -1,54 +1,23 @@
 package com.example.myblog.user;
 
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-@Repository
-@RequiredArgsConstructor
-public class UserRepository {
-    private final EntityManager em;
+import java.util.Optional;
 
-    // 로그인
-    public User login(String username, String password) {
+public interface UserRepository extends JpaRepository<User, Integer> {
+    // 1. 사용자명으로 사용자 조회(중복 체크 확인 용)
+    @Query("""
+            select u from User u where u.username = :username
+            """)
+    Optional<User> findByUsername(@Param("username") String username);
 
-        String jpql = """
-                SELECT u 
-                FROM User u 
-                Where u.username = :username 
-                AND u.password = :password 
-                """;
+    // 2. 사용자명과 비밀번호로 사용자 조회(로그인용)
+    @Query("""
+            select u from user u where u.username = :username and u.password = :password
+            """)
+    Optional<User> findByUsernameAndPassword(@Param("username") String username,
+                                             @Param("password") String password);
 
-        try {
-            return em.createQuery(jpql, User.class)
-                    .setParameter("username", username)
-                    .setParameter("password", password)
-                    .getSingleResult();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    // 중복 확인
-    public User findByUsername(String username) {
-        String jpql = """
-                SELECT u FROM User u WHERE u.username = :username
-                """;
-        try {
-            return em.createQuery(jpql, User.class)
-                    .setParameter("username",username)
-                    .getSingleResult();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    // 회원 가입
-    @Transactional
-    public User join(User user){
-        em.persist(user);
-
-        return user;
-    }
 }
